@@ -28,13 +28,20 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="20" />
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="2" Grid.Column="1" Margin="5">Username</TextBlock>
-        <TextBox x:Name="UserName" Grid.Row="2" Grid.Column="2" MinWidth="100" />
-        
+
         <Button x:Name="LoginButton" Grid.Row="1" 
                 Grid.Column="1" Grid.ColumnSpan="2">Characters</Button>
 
+        <TextBlock Grid.Row="2" Grid.Column="1" Margin="5">Username</TextBlock>
+        <TextBox x:Name="UserName" Grid.Row="2" Grid.Column="2" MinWidth="100"/>
+
+        <TextBlock Grid.Row="3" Grid.Column="1" Margin=" 5">Password</TextBlock>
+        <TextBox x:Name="Password" Grid.Row="3" Grid.Column="2" MinWidth="100"/> 
+
+        <Button x:Name="RegisterButton" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2">
+            Register</Button>
+
         <ContentControl Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="5"
-                        x:Name="ActiveItem"></ContentControl>
+                        Grid.RowSpan="5" x:Name="ActiveItem"></ContentControl>
     </Grid>
 </Window>

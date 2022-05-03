@@ -13,31 +13,42 @@ namespace OrderApp.ViewModels
         private UsersModel _user;
         private List<CharactersModel> _people;
         private string _characterName;
-
         private CharactersModel _selectedChar;
+        private string _newCharName;
 
+        public string NewCharName
+        {
+            get { return _newCharName; }
+            set 
+            { 
+                _newCharName = value;
+                NotifyOfPropertyChange();
+            }
+        }
         public CharactersModel SelectedChar
         {
             get { return _selectedChar; }
-            set { _selectedChar = value; }
+            set { 
+                _selectedChar = value;
+                NotifyOfPropertyChange();
+            }
         }
-
-
 
         public string CharacterName
         {
             get { return _characterName; }
-            set { _characterName = value; }
+            set 
+            {
+                _characterName = value;
+                NotifyOfPropertyChange();
+            }
         }
-
 
         public UsersModel User
         {
             get { return _user; }
             set { _user = value; }
         }
-
-        
 
         public List<CharactersModel> People
         {
@@ -49,7 +60,6 @@ namespace OrderApp.ViewModels
             }
         }
 
-
         public CharactersViewModel(UsersModel user)
         {
             this.User = user;
@@ -60,11 +70,19 @@ namespace OrderApp.ViewModels
         {
             SqliteDataAccess.SaveCharacter(new CharactersModel { CharacterName = CharacterName, UserID = User.ID });
             this.People = SqliteDataAccess.LoadCharacters(User);
+            CharacterName = "";
         }
         public void DeleteCharButton()
         {
             SqliteDataAccess.DeleteCharacter(SelectedChar);
             this.People = SqliteDataAccess.LoadCharacters(User);
+        }
+        public void UpdateCharButton()
+        {
+            SelectedChar.CharacterName = NewCharName;
+            SqliteDataAccess.UpdateCharacter(SelectedChar);
+            this.People = SqliteDataAccess.LoadCharacters(User);
+            NewCharName = "";
         }
 
     }
