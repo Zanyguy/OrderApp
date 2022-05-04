@@ -60,6 +60,12 @@ namespace OrderApp.ViewModels
                 ActivateItemAsync(new CharactersViewModel(user));
             }
         }
+
+        public void OrdersButton()
+        {
+            UsersModel user = SqliteDataAccess.LoginAttempt(UserName);
+            ActivateItemAsync(new OrdersViewModel(user));
+        }
         public static string Protect(string str)
         {
             byte[] entropy = Encoding.ASCII.GetBytes(Assembly.GetExecutingAssembly().FullName);
