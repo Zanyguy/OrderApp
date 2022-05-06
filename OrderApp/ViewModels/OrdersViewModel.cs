@@ -19,34 +19,45 @@ namespace OrderApp.ViewModels
         private PotionsModel? _selectedPotion = null;
         private FoodsModel? _selectedFood = null;
         private CharactersModel _selectedChar;
-        private int _flaskQty;
-        private int _potionQty;
-        private int _foodQty;
-        private List<OrderDisplayModel> _orders;
+        private int? _flaskQty;
+        private int? _potionQty;
+        private int? _foodQty;
+        private BindableCollection<OrderDisplayModel> _orders;
+        private OrderDisplayModel _selectedOrder;
 
-        public List<OrderDisplayModel> Orders
+        public OrderDisplayModel SelectedOrder
+        {
+            get { return _selectedOrder; }
+            set 
+            { 
+                _selectedOrder = value; 
+                NotifyOfPropertyChange(() => SelectedOrder); 
+            }
+        }
+
+        public BindableCollection<OrderDisplayModel> Orders
         {
             get { return _orders; }
             set 
             { 
                 _orders = value;
-                NotifyOfPropertyChange();
+                NotifyOfPropertyChange(() => Orders);
             }
         }
 
-        public int FoodQty
+        public int? FoodQty
         {
             get { return _foodQty; }
             set { _foodQty = value; }
         }
 
-        public int PotionQty
+        public int? PotionQty
         {
             get { return _potionQty; }
             set { _potionQty = value; }
         }
 
-        public int FlaskQty
+        public int? FlaskQty
         {
             get { return _flaskQty; }
             set { _flaskQty = value; }
@@ -123,7 +134,8 @@ namespace OrderApp.ViewModels
             this.Flasks = SqliteDataAccess.LoadFlasks();
             this.Potions = SqliteDataAccess.LoadPotions();
             this.Foods = SqliteDataAccess.LoadFoods();
-            this.Orders = SqliteDataAccess.LoadOrders();
+            List<OrderDisplayModel> orders = SqliteDataAccess.LoadOrders();
+            this.Orders = new BindableCollection<OrderDisplayModel>(orders);
 
         }
         public void NewOrderButton()
@@ -148,7 +160,20 @@ namespace OrderApp.ViewModels
             }
 
             SqliteDataAccess.SaveOrder(order);
+            List<OrderDisplayModel> orders = SqliteDataAccess.LoadOrders();
+            this.Orders = new BindableCollection<OrderDisplayModel>(orders);
 
         }
+        public void DeleteOrderButton()
+        {
+            if (!(SelectedOrder is null))
+            {
+                SqliteDataAccess.DeleteOrder(SelectedOrder);
+                List<OrderDisplayModel> orders = SqliteDataAccess.LoadOrders();
+                this.Orders = new BindableCollection<OrderDisplayModel>(orders);
+
+            }
+        }
     }
+
 }

@@ -96,7 +96,13 @@ namespace DataAccess
                 cnn.Execute("update Characters set CharacterName = @CharacterName where ID = @ID ", person);
             }
         }
-
+        public static void DeleteOrder(OrderDisplayModel order)
+        {
+            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            {
+                cnn.Execute("Delete from Orders where ID = @ID", order);
+            }
+        }
         public static void DeleteCharacter(CharactersModel person)
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))

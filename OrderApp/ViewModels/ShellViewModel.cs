@@ -15,7 +15,7 @@ namespace OrderApp.ViewModels
 {
     public class ShellViewModel : Conductor<object>
     {
-        private string _UserName;
+        private string _userName;
         private string _password;
 
         public string Password
@@ -30,11 +30,11 @@ namespace OrderApp.ViewModels
 
         public string UserName
         {
-            get { return _UserName; }
+            get { return _userName; }
             set 
             { 
-                _UserName = value;
-                NotifyOfPropertyChange();
+                _userName = value;
+                NotifyOfPropertyChange(() => UserName);
             }
         }
 
@@ -48,6 +48,8 @@ namespace OrderApp.ViewModels
                 string HashedPassword = Protect(Password);
                 UsersModel user = new UsersModel { UserName = UserName, Password = HashedPassword };
                 SqliteDataAccess.RegisterUser(user);
+                UserName = "";
+                Password = "";
             }
         }
 
@@ -60,6 +62,18 @@ namespace OrderApp.ViewModels
                 ActivateItemAsync(new CharactersViewModel(user));
             }
         }
+
+        public void CharactersButton()
+        {
+
+            UsersModel user = SqliteDataAccess.LoginAttempt(UserName);
+            if (!(user is null))
+            {
+
+                ActivateItemAsync(new CharactersViewModel(user));
+            }
+        }
+
 
         public void OrdersButton()
         {
