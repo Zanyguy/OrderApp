@@ -17,6 +17,8 @@ namespace DataAccess
         public int PotionQty { get; set; } 
         public string FoodName { get; set; }
         public int  FoodQty { get; set; }
+        public string Status { get; set; }
+        public string Crafter { get; set; }
 
     }
 }

@@ -17,6 +17,25 @@ namespace OrderApp.ViewModels
     {
         private string _userName;
         private string _password;
+        private bool _crafter;
+        private bool _loggedIn;
+
+        public bool LoggedIn
+        {
+            get { return _loggedIn; }
+            set 
+            { 
+                _loggedIn = value; 
+                NotifyOfPropertyChange(() => LoggedIn);
+            }
+        }
+
+
+        public bool Crafter
+        {
+            get { return _crafter; }
+            set { _crafter = value; }
+        }
 
         public string Password
         {
@@ -46,21 +65,37 @@ namespace OrderApp.ViewModels
             if (!userExists)
             {
                 string HashedPassword = Protect(Password);
-                UsersModel user = new UsersModel { UserName = UserName, Password = HashedPassword };
+                int role = Crafter ? 2 : 1;
+                UsersModel user = new UsersModel { UserName = UserName, Password = HashedPassword , Role = role};
                 SqliteDataAccess.RegisterUser(user);
                 UserName = "";
                 Password = "";
+                Crafter = false;
             }
         }
 
         public void LoginButton()
         {
-            UsersModel user = SqliteDataAccess.LoginAttempt(UserName);
-            if (Password == Unprotect(user.Password))
+            bool userExists = SqliteDataAccess.UserExists(UserName);
+
+            if (userExists)
             {
-                
-                ActivateItemAsync(new CharactersViewModel(user));
+                UsersModel user = SqliteDataAccess.LoginAttempt(UserName);
+                if (Password == Unprotect(user.Password))
+                {
+                    if (user.Role == 2)
+                    {
+                        ActivateItemAsync(new CrafterViewModel(user));
+                    }
+                    else
+                    {
+                        ActivateItemAsync(new CharactersViewModel(user));
+                        LoggedIn = true;
+
+                    }
+                }
             }
+
         }
 
         public void CharactersButton()

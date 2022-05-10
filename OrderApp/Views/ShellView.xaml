@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OrderApp.Views" xmlns:viewmodels="clr-namespace:OrderApp.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:ShellViewModel}"
         mc:Ignorable="d"
-        Title="ShellView" Height="450" Width="600">
+        Title="ShellView" Height="450" Width="800">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
     </Window.Resources>
@@ -31,9 +31,11 @@
         </Grid.RowDefinitions>
 
         <Button x:Name="CharactersButton" Grid.Row="1" Margin="5"
-                Grid.Column="1" Grid.ColumnSpan="2">Characters</Button>
+                Grid.Column="1" Grid.ColumnSpan="2" MinWidth="80"
+                IsEnabled="{Binding LoggedIn}">Characters</Button>
         <Button x:Name="OrdersButton" Grid.Row="1" Margin="5"
-                Grid.Column="3" Grid.ColumnSpan="2" MinWidth="150"> Orders</Button>
+                Grid.Column="3" Grid.ColumnSpan="2" MinWidth="80"
+                IsEnabled="{Binding LoggedIn}"> Orders</Button>
         <StackPanel  Orientation="Vertical" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="5" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.RowSpan="5">
         <StackPanel Orientation="Horizontal">
         <TextBlock Grid.Row="2" Grid.Column="1" Margin="5">Username</TextBlock>
@@ -43,10 +45,9 @@
                 <TextBlock Grid.Row="3" Grid.Column="1" Margin=" 5" Width="53">Password</TextBlock>
         <TextBox x:Name="Password" Grid.Row="3" Grid.Column="2" MinWidth="100"/>
         </StackPanel>
-        <Button x:Name="LoginButton" Grid.Row="4" Grid.Column="1"   Grid.ColumnSpan="2"> Login</Button>
-        
-        <Button x:Name="RegisterButton" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2">
-            Register</Button>
+            <Button x:Name="LoginButton">Login</Button>
+            <Button x:Name="RegisterButton">Register</Button>
+            <CheckBox x:Name="Crafter" HorizontalAlignment="Center">Crafter?</CheckBox>
         </StackPanel>
         
 

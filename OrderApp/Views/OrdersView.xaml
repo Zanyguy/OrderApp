@@ -73,9 +73,8 @@
         <TextBlock Grid.Row="3" Grid.Column="7" Text="Qty" HorizontalAlignment="Right"/>
         <TextBox x:Name="FoodQty" Grid.Row="3" Grid.Column="8" Width="75"/>
 
-        <Button x:Name="NewOrderButton" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2">Save Order</Button>
-        <Button x:Name="EditOrderButton" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2">Edit Order</Button>
-        <Button x:Name="DeleteOrderButton" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2">Delete Order</Button>
+        <Button x:Name="NewOrderButton" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2">Place Order</Button>
+        <Button x:Name="DeleteOrderButton" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2">Delete Order</Button>
 
     </Grid>
 </UserControl>

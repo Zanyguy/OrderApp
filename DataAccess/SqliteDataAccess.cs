@@ -27,9 +27,12 @@ namespace DataAccess
             {
 
                 var output = cnn.Query<OrderDisplayModel>("select Orders.ID, Users.UserName, Characters.CharacterName, Flasks.FlaskName, Orders.FlaskQty, Potions.PotionName, " +
-                    "Orders.PotionQty, Foods.FoodName, Orders.FoodQty" +
-                    " from Orders LEFT Join Users on Orders.UserID = Users.ID LEFT Join Characters on Orders.CharacterID = Characters.ID " +
-                    "LEFT Join Flasks on Orders.FlaskID = Flasks.ID LEFT Join Potions on Orders.PotionID = Potions.ID " +
+                    "Orders.PotionQty, Foods.FoodName, Orders.FoodQty, Orders.Status, Orders.Crafter" +
+                    " from Orders " +
+                    "LEFT Join Users on Orders.UserID = Users.ID " +
+                    "LEFT Join Characters on Orders.CharacterID = Characters.ID " +
+                    "LEFT Join Flasks on Orders.FlaskID = Flasks.ID " +
+                    "LEFT Join Potions on Orders.PotionID = Potions.ID " +
                     "LEFT Join Foods on Orders.FoodID = Foods.ID");
                 return output.ToList();
             }
@@ -85,8 +88,8 @@ namespace DataAccess
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
-                cnn.Execute("insert into Orders (UserID, CharacterID, FlaskId, FlaskQty, PotionID, PotionQty, FoodID, FoodQty) " +
-                    "values (@UserID, @CharacterID, @FlaskID, @FlaskQty, @PotionID, @PotionQty, @FoodID, @FoodQty)", order);
+                cnn.Execute("insert into Orders (UserID, CharacterID, FlaskId, FlaskQty, PotionID, PotionQty, FoodID, FoodQty, Status) " +
+                    "values (@UserID, @CharacterID, @FlaskID, @FlaskQty, @PotionID, @PotionQty, @FoodID, @FoodQty, 'Order Placed')", order);
             }
         }
         public static void UpdateCharacter(CharactersModel person)
@@ -94,6 +97,14 @@ namespace DataAccess
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
                 cnn.Execute("update Characters set CharacterName = @CharacterName where ID = @ID ", person);
+            }
+        }
+        public static void UpdateOrder(OrderDisplayModel order, UsersModel user)
+        {
+            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            {
+                cnn.Execute("update Orders set Status = @Status, Crafter = @Crafter where ID = @ID ",
+                    new {Status = order.Status, Crafter = user.UserName, ID = order.ID });
             }
         }
         public static void DeleteOrder(OrderDisplayModel order)
@@ -123,7 +134,7 @@ namespace DataAccess
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
-                cnn.Execute("insert into Users (UserName, Password) values (@UserName, @Password)", User);
+                cnn.Execute("insert into Users (UserName, Password, Role) values (@UserName, @Password, @Role)", User);
             }
         }
 
